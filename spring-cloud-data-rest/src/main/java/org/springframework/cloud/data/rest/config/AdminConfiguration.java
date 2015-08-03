@@ -20,14 +20,9 @@ import static org.springframework.hateoas.config.EnableHypermediaSupport.Hyperme
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.data.module.deployer.ModuleDeployer;
 import org.springframework.cloud.data.module.deployer.lattice.ReceptorModuleDeployer;
 import org.springframework.cloud.data.module.deployer.local.LocalModuleDeployer;
-import org.springframework.cloud.data.rest.controller.StreamController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -36,8 +31,6 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -70,33 +63,11 @@ public class AdminConfiguration {
 	public WebMvcConfigurer configurer() {
 		return new WebMvcConfigurerAdapter() {
 
-//			@Value("${xd.ui.allow_origin:http://localhost:9889}")
-//			private String allowedOrigin;
-
 			@Override
 			public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//				RestTemplateMessageConverterUtil.installMessageConverters(converters);
-//
-//				for (HttpMessageConverter<?> httpMessageConverter : converters) {
-//					if (httpMessageConverter instanceof MappingJackson2HttpMessageConverter) {
-//						final MappingJackson2HttpMessageConverter converter = (MappingJackson2HttpMessageConverter) httpMessageConverter;
-//
-//						final ObjectMapper objectMapper = converter.getObjectMapper();
-//						objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-//						objectMapper.setDateFormat(new ISO8601DateFormatWithMilliSeconds());
-//						objectMapper.addMixInAnnotations(StepExecution.class, StepExecutionJacksonMixIn.class);
-//						objectMapper.addMixInAnnotations(ExecutionContext.class, ExecutionContextJacksonMixIn.class);
-//					}
-//				}
-
+				RestTemplateMessageConverterUtil.installMessageConverters(converters);
 				converters.add(new ResourceHttpMessageConverter());
 			}
-
-//			@Override
-//			public void addInterceptors(InterceptorRegistry registry) {
-//				registry.addInterceptor(new AccessControlInterceptor(allowedOrigin));
-//				registry.addInterceptor(webContentInterceptor());
-//			}
 
 		};
 	}

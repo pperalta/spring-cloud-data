@@ -21,6 +21,7 @@ import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.data.core.ModuleCoordinates;
 import org.springframework.cloud.data.core.ModuleDefinition;
 import org.springframework.cloud.data.core.ModuleDeploymentRequest;
@@ -37,6 +38,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,7 +52,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Mark Fisher
  */
-@RestController
+@Controller
 @RequestMapping("/streams")
 @ExposesResourceFor(StreamDefinitionResource.class)
 public class StreamController {
@@ -67,6 +69,7 @@ public class StreamController {
 	 *
 	 * @param moduleDeployer the deployer this controller will use to deploy stream modules.
 	 */
+	@Autowired
 	public StreamController(ModuleDeployer moduleDeployer) {
 		Assert.notNull(moduleDeployer, "moduleDeployer must not be null");
 		this.deployer = moduleDeployer;

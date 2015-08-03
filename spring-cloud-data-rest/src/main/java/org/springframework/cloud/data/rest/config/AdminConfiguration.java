@@ -21,6 +21,7 @@ import org.springframework.cloud.data.module.deployer.lattice.ReceptorModuleDepl
 import org.springframework.cloud.data.module.deployer.local.LocalModuleDeployer;
 import org.springframework.cloud.data.rest.controller.StreamController;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
@@ -28,12 +29,8 @@ import org.springframework.context.annotation.Profile;
  * @author Mark Fisher
  */
 @Configuration
+@ComponentScan(basePackages = "org.springframework.cloud.data.rest.controller")
 public class AdminConfiguration {
-
-	@Bean
-	public StreamController streamController(ModuleDeployer moduleDeployer) {
-		return new StreamController(moduleDeployer);
-	}
 
 	@Bean
 	@Profile("!cloud")

@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.data.rest.resource;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.springframework.cloud.data.core.StreamDefinition;
 import org.springframework.cloud.data.rest.controller.StreamController;
 import org.springframework.hateoas.ResourceSupport;
@@ -28,6 +30,7 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
  *
  * @author Patrick Peralta
  */
+@XmlRootElement
 public class StreamDefinitionResource extends ResourceSupport {
 
 	private final StreamDefinition definition;

@@ -33,9 +33,16 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 @XmlRootElement
 public class StreamDefinitionResource extends ResourceSupport {
 
-	private final StreamDefinition definition;
+	private StreamDefinition definition;
 
 	private String status;
+
+	/**
+	 * Default constructor for serialization frameworks.
+	 */
+	protected StreamDefinitionResource() {
+
+	}
 
 	/**
 	 * todo

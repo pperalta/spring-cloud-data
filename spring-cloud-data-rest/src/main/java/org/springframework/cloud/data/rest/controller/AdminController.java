@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.data.rest.controller;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +26,6 @@ import org.springframework.hateoas.ResourceSupport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Patrick Peralta
@@ -50,14 +47,11 @@ public class AdminController {
 	public ResourceSupport info() {
 		RootResource resourceSupport = new RootResource();
 
-		logger.warn("adding links");
-
 		resourceSupport.add(entityLinks.linkFor(StreamDefinitionResource.class).withRel("streams"));
 
 		return resourceSupport;
 	}
 
-	@XmlRootElement(name = "XDRuntime")
 	public static class RootResource extends ResourceSupport {
 	}
 }

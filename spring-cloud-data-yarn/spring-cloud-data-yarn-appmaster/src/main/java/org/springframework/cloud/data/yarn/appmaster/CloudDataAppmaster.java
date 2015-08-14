@@ -32,9 +32,9 @@ import org.springframework.yarn.am.cluster.ManagedContainerClusterAppmaster;
  * @author Janne Valkealahti
  *
  */
-public class XdAppmaster extends ManagedContainerClusterAppmaster {
+public class CloudDataAppmaster extends ManagedContainerClusterAppmaster {
 
-	private final static Log log = LogFactory.getLog(XdAppmaster.class);
+	private final static Log log = LogFactory.getLog(CloudDataAppmaster.class);
 
 	@Override
 	protected List<String> onContainerLaunchCommands(Container container, ContainerCluster cluster,

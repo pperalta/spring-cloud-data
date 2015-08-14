@@ -27,7 +27,7 @@ public class ClientApplication extends AbstractCli {
 		commands.add(new YarnPushCommand());
 		commands.add(new YarnPushedCommand());
 		commands.add(new YarnSubmitCommand());
-		commands.add(new YarnSubmittedCommand(new SubmittedOptionHandler("XD")));
+		commands.add(new YarnSubmittedCommand(new SubmittedOptionHandler("CLOUDDATA")));
 		commands.add(new YarnKillCommand());
 		// disable due to boot #3724 which broke
 		// container registrar

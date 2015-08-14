@@ -35,12 +35,12 @@ import org.springframework.yarn.boot.app.YarnContainerClusterApplication;
 import org.springframework.yarn.boot.app.YarnInfoApplication;
 
 /**
- * {@link ModuleDeployer} which communicates to XD's yarn app running
- * on a hadoop cluster waiting for deployment requests. This app is
- * utilising spring yarn's container grouping functionality to create a
- * new group per module type which then allows all modules to share same
- * settings and group itself can controlled, i.e. ramp up/down or shutdown/destroy
- * whole group.
+ * {@link ModuleDeployer} which communicates with a Yarn app running
+ * on a Hadoop cluster waiting for deployment requests. This app
+ * uses Spring Yarn's container grouping functionality to create a
+ * new group per module type. This allows all modules to share the
+ * same settings and the group itself can controlled, i.e. ramp up/down
+ * or shutdown/destroy a whole group.
  *
  * @author Janne Valkealahti
  */
@@ -59,10 +59,10 @@ public class YarnModuleDeployer implements ModuleDeployer {
 		ModuleDefinition definition = request.getDefinition();
 		logger.info("deploying request for definition: " + definition);
 
-		ModuleDeploymentId moduleDeploymentId = new ModuleDeploymentId(definition.getGroup(), definition.getLabel());
+		ModuleDeploymentId moduleDeploymentId = ModuleDeploymentId.fromModuleDefinition(definition);
 		String clusterId = sanitizeClusterId(convertFromModuleDeploymentId(moduleDeploymentId));
 
-		String yarnApplicationId = findRunningXdYarnApp();
+		String yarnApplicationId = findRunningCloudDataYarnApp();
 		logger.info("Using application id " + yarnApplicationId);
 		String module = coordinates.toString();
 		logger.info("deploying module: " + module);
@@ -102,7 +102,7 @@ public class YarnModuleDeployer implements ModuleDeployer {
 	@Override
 	public void undeploy(ModuleDeploymentId id) {
 		String clusterId = convertFromModuleDeploymentId(id);
-		String yarnApplicationId = findRunningXdYarnApp();
+		String yarnApplicationId = findRunningCloudDataYarnApp();
 		YarnContainerClusterApplication app = new YarnContainerClusterApplication();
 		Properties appProperties = new Properties();
 		appProperties.setProperty(PREFIX + "operation", "CLUSTERSTOP");
@@ -115,7 +115,7 @@ public class YarnModuleDeployer implements ModuleDeployer {
 
 	@Override
 	public ModuleStatus status(ModuleDeploymentId id) {
-		String yarnApplicationId = findRunningXdYarnApp();
+		String yarnApplicationId = findRunningCloudDataYarnApp();
 		String clusterId = convertFromModuleDeploymentId(id);
 
 		YarnContainerClusterApplication app = new YarnContainerClusterApplication();
@@ -148,12 +148,12 @@ public class YarnModuleDeployer implements ModuleDeployer {
 		return statuses;
 	}
 
-	private static String findRunningXdYarnApp() {
+	private static String findRunningCloudDataYarnApp() {
 		YarnInfoApplication app = new YarnInfoApplication();
 		Properties appProperties = new Properties();
 		appProperties.setProperty("spring.yarn.internal.YarnInfoApplication.operation", "SUBMITTED");
 		appProperties.setProperty("spring.yarn.internal.YarnInfoApplication.verbose", "false");
-		appProperties.setProperty("spring.yarn.internal.YarnInfoApplication.type", "XD");
+		appProperties.setProperty("spring.yarn.internal.YarnInfoApplication.type", "CLOUDDATA");
 		app.appProperties(appProperties);
 		String info = app.run();
 		logger.info("Full status response for SUBMITTED app " + info);
@@ -170,7 +170,7 @@ public class YarnModuleDeployer implements ModuleDeployer {
 	}
 
 	private static Collection<String> findRunningContainerClusters() {
-		String yarnApplicationId = findRunningXdYarnApp();
+		String yarnApplicationId = findRunningCloudDataYarnApp();
 
 		YarnContainerClusterApplication app = new YarnContainerClusterApplication();
 		Properties appProperties = new Properties();

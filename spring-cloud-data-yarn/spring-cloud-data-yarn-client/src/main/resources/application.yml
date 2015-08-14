@@ -5,7 +5,7 @@ spring:
         fsUri: hdfs://localhost:8020
         resourceManagerHost: localhost
     yarn:
-        appType: XD
+        appType: CLOUDDATA
         appName: spring-cloud-data-yarn-app
         applicationBaseDir: /app/
         applicationDir: /app/spring-cloud-data-yarn-app/

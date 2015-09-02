@@ -16,17 +16,20 @@
 
 package org.springframework.cloud.data.module.deployer.yarn;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
+
 import org.springframework.cloud.data.module.deployer.yarn.YarnCloudAppStateMachine.Events;
 import org.springframework.cloud.data.module.deployer.yarn.YarnCloudAppStateMachine.States;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -234,24 +237,25 @@ public class YarnCloudAppStateMachineTests {
 
 	private static class TestYarnCloudAppService implements YarnCloudAppService {
 
-		String app = null;
-		String instance = null;
+		volatile String app = null;
+		volatile String instance = null;
 
-		volatile CountDownLatch getApplicationsLatch = new CountDownLatch(1);
-		volatile CountDownLatch getInstancesLatch = new CountDownLatch(2);
-		volatile CountDownLatch pushApplicationLatch = new CountDownLatch(1);
-		volatile CountDownLatch submitApplicationLatch = new CountDownLatch(1);
-		volatile CountDownLatch createClusterLatch = new CountDownLatch(1);
-		volatile CountDownLatch startClusterLatch = new CountDownLatch(1);
-		volatile CountDownLatch stopClusterLatch = new CountDownLatch(1);
+		final CountDownLatch getApplicationsLatch = new CountDownLatch(1);
+		final CountDownLatch getInstancesLatch = new CountDownLatch(2);
+		final CountDownLatch pushApplicationLatch = new CountDownLatch(1);
+		final CountDownLatch submitApplicationLatch = new CountDownLatch(1);
+		final CountDownLatch createClusterLatch = new CountDownLatch(1);
+		final CountDownLatch startClusterLatch = new CountDownLatch(1);
+		final CountDownLatch stopClusterLatch = new CountDownLatch(1);
 
-		int getApplicationsCount = 0;
-		int getInstancesCount = 0;
-		final ArrayList<Wrapper> pushApplicationCount = new ArrayList<Wrapper>();
-		final ArrayList<Wrapper> submitApplicationCount = new ArrayList<Wrapper>();
-		final ArrayList<Wrapper> createClusterCount = new ArrayList<Wrapper>();
-		final ArrayList<Wrapper> startClusterCount = new ArrayList<Wrapper>();
-		final ArrayList<Wrapper> stopClusterCount = new ArrayList<Wrapper>();
+		volatile int getApplicationsCount = 0;
+		volatile int getInstancesCount = 0;
+
+		final List<Wrapper> pushApplicationCount = Collections.synchronizedList(new ArrayList<Wrapper>());
+		final List<Wrapper> submitApplicationCount = Collections.synchronizedList(new ArrayList<Wrapper>());
+		final List<Wrapper> createClusterCount = Collections.synchronizedList(new ArrayList<Wrapper>());
+		final List<Wrapper> startClusterCount = Collections.synchronizedList(new ArrayList<Wrapper>());
+		final List<Wrapper> stopClusterCount = Collections.synchronizedList(new ArrayList<Wrapper>());
 
 		@Override
 		public Collection<CloudAppInfo> getApplications() {

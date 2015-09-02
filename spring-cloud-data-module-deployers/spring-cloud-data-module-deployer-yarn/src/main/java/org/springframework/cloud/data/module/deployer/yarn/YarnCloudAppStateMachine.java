@@ -277,17 +277,22 @@ public class YarnCloudAppStateMachine {
 
 			// TODO: for now just loop until we get proper handling
 			//       via looping in a state machine itself.
-			boolean running = false;
 			Exception error = null;
 			for (int i = 0; i < 60; i++) {
 				try {
-					running = isRunning();
-					if (running) {
+					if (isRunning()) {
 						return;
-					} else {
+					}
+					else {
 						Thread.sleep(1000);
 					}
-				} catch (Exception e) {
+				}
+				catch (InterruptedException e) {
+					error = e;
+					Thread.currentThread().interrupt();
+					break;
+				}
+				catch (Exception e) {
 					error = e;
 					break;
 				}

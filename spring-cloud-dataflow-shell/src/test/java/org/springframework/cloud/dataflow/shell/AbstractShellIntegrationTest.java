@@ -17,6 +17,7 @@
 package org.springframework.cloud.dataflow.shell;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -41,7 +42,9 @@ import org.springframework.shell.core.CommandResult;
 import org.springframework.shell.core.JLineShellComponent;
 import org.springframework.util.AlternativeJdkIdGenerator;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.IdGenerator;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.util.SocketUtils;
 
 /**
@@ -104,7 +107,7 @@ public abstract class AbstractShellIntegrationTest {
 	public TestName name = new TestName();
 
 	@BeforeClass
-	public static void startUp() throws InterruptedException, IOException {
+	public static void startUp() throws InterruptedException, IOException, ClassNotFoundException {
 		if (applicationContext == null) {
 			if (System.getProperty(SHUTDOWN_AFTER_RUN) != null) {
 				shutdownAfterRun = Boolean.getBoolean(SHUTDOWN_AFTER_RUN);
